@@ -1,6 +1,5 @@
 package com.github.akassharjun.hotdogshowdown
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
@@ -42,7 +41,6 @@ class LoginActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    @SuppressLint("SimpleDateFormat")
     fun createUsers() {
         val users = db.collection("Users")
 
