@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+	xmlns:app = "http://schemas.android.com/apk/res-auto"
+	xmlns:tools = "http://schemas.android.com/tools"
+	android:layout_width = "match_parent"
+	android:layout_height = "match_parent"
+	android:descendantFocusability="afterDescendants"
+	android:background="@drawable/background"
+	tools:context = ".LoginActivity">
+	
+	<ImageView
+		android:id = "@+id/logo"
+		android:layout_width = "0dp"
+		android:layout_height = "0dp"
+		android:layout_marginTop = "8dp"
+		android:layout_marginBottom = "8dp"
+		app:layout_constraintBottom_toBottomOf = "parent"
+		app:layout_constraintDimensionRatio = "1.1:1"
+		app:layout_constraintEnd_toEndOf = "parent"
+		app:layout_constraintStart_toStartOf = "parent"
+		app:layout_constraintTop_toTopOf = "parent"
+		app:layout_constraintVertical_bias = "0.0"
+		app:srcCompat = "@drawable/logo" />
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width = "match_parent"
+		android:layout_height = "0dp"
+		android:layout_margin = "10dp"
+		app:layout_constraintBottom_toBottomOf = "parent"
+		app:layout_constraintEnd_toEndOf = "parent"
+		app:layout_constraintStart_toStartOf = "parent"
+		app:layout_constraintTop_toBottomOf = "@+id/logo">
+		
+		<ProgressBar
+			android:id = "@+id/mProgressBar"
+			android:layout_width = "0dp"
+			android:layout_height = "0dp"
+			android:progressDrawable = "@drawable/progress_bar"
+			android:visibility = "gone"
+			app:layout_constraintBottom_toBottomOf = "parent"
+			app:layout_constraintDimensionRatio = "3:1"
+			app:layout_constraintEnd_toEndOf = "parent"
+			app:layout_constraintStart_toStartOf = "parent"
+			app:layout_constraintTop_toTopOf = "parent" />
+		
+		<EditText
+			android:id = "@+id/mUserID"
+			android:layout_width = "0dp"
+			android:layout_height = "wrap_content"
+			android:layout_marginStart = "32dp"
+			android:layout_marginEnd = "32dp"
+			android:layout_marginBottom = "22dp"
+			android:background = "@drawable/edit_text_yellow"
+			android:ems = "10"
+			android:inputType = "textPersonName"
+			android:padding = "@dimen/edittext_user_id_padding"
+			android:singleLine = "true"
+			android:hint="Enter user ID"
+			android:imeOptions="actionSend"
+			android:textColorHint="@color/colorBrown"
+			android:textColor = "@color/colorBrown"
+			app:layout_constraintBottom_toTopOf = "@+id/mLogin"
+			app:layout_constraintEnd_toEndOf = "parent"
+			app:layout_constraintStart_toStartOf = "parent"
+			app:layout_constraintTop_toTopOf = "parent"
+			app:layout_constraintVertical_chainStyle = "packed" />
+		
+		<Button
+			android:id = "@+id/mLogin"
+			android:layout_width = "0dp"
+			android:layout_height = "wrap_content"
+			android:layout_marginStart = "32dp"
+			android:layout_marginEnd = "32dp"
+			android:layout_marginBottom = "9dp"
+			android:background = "@drawable/button_login"
+			android:text = "Login"
+			android:textColor = "@color/colorWhite"
+			app:layout_constraintBottom_toBottomOf = "parent"
+			app:layout_constraintEnd_toEndOf = "parent"
+			app:layout_constraintStart_toStartOf = "parent"
+			app:layout_constraintTop_toBottomOf = "@+id/mUserID" />
+		
+		<TextView
+			android:id = "@+id/mLabel"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:layout_marginStart = "8dp"
+			android:layout_marginTop = "8dp"
+			android:layout_marginBottom = "11dp"
+			android:text = "User ID"
+			android:textColor = "@color/colorBrown"
+			app:layout_constraintBottom_toTopOf = "@+id/mUserID"
+			app:layout_constraintStart_toStartOf = "@+id/mUserID"
+			app:layout_constraintTop_toTopOf = "parent"
+			app:layout_constraintVertical_bias = "1.0" />
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

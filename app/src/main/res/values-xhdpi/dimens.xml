@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name = "name_label_text_size">16sp</dimen>
+	<dimen name = "id_label_text_size">16sp</dimen>
+	<dimen name = "name_text_size">18sp</dimen>
+	<dimen name = "id_text_size">18sp</dimen>
+	<dimen name = "hotdog_amount_label_text_size">18sp</dimen>
+	<dimen name = "dialog_title">18sp</dimen>
+	<dimen name = "dialog_text">16sp</dimen>
+	<dimen name = "round_name_text_size">22sp</dimen>
+	<dimen name = "hotdog_amount_text_size">65sp</dimen>
+	<dimen name = "button_add_text_size">70sp</dimen>
+	<dimen name = "button_remove_text_size">70sp</dimen>
+	<dimen name = "edittext_user_id_padding">15dp</dimen>
+</resources>

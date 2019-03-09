@@ -1,0 +1,13 @@
+<resources>
+	
+	<!-- Base application theme. -->
+	<style name = "AppTheme" parent = "Theme.AppCompat.Light.NoActionBar">
+		<!-- Customize your theme here. -->
+		<item name = "colorPrimary">@color/colorBrown</item>
+		<item name = "colorPrimaryDark">@color/colorBrown</item>
+		<item name = "colorAccent">@color/colorYellowLight</item>
+		<item name = "fontFamily">@font/rubik_medium</item>
+		<item name = "android:fontFamily">@font/rubik_medium</item>
+	</style>
+
+</resources>

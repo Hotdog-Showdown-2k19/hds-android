@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "289757024284",
+    "firebase_url": "https://hotdog-showdown-2019.firebaseio.com",
+    "project_id": "hotdog-showdown-2019",
+    "storage_bucket": "hotdog-showdown-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289757024284:android:6f727e3a81df6d47",
+        "android_client_info": {
+          "package_name": "com.github.akassharjun.hotdogshowdown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289757024284-s0nfs9ufr4d6bt6bmkqg0k0e9ordns1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoXBpOppmZvYaRkT20Yue6TdKMxh5AaBs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

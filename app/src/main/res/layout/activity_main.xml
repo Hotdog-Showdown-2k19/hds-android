@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+	xmlns:app = "http://schemas.android.com/apk/res-auto"
+	xmlns:tools = "http://schemas.android.com/tools"
+	android:layout_width = "match_parent"
+	android:layout_height = "match_parent"
+	android:background = "@drawable/background_test"
+	tools:context = ".MainActivity">
+	
+	<androidx.cardview.widget.CardView
+		android:id = "@+id/userInfo"
+		android:layout_width = "0dp"
+		android:layout_height = "wrap_content"
+		android:layout_marginBottom = "8dp"
+		app:cardBackgroundColor = "@color/colorPrimary"
+		app:contentPadding = "10dp"
+		app:layout_constraintBottom_toBottomOf = "parent"
+		app:layout_constraintEnd_toEndOf = "parent"
+		app:layout_constraintStart_toStartOf = "parent"
+		app:layout_constraintTop_toTopOf = "parent"
+		app:layout_constraintVertical_bias = "0.0">
+		
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width = "match_parent"
+			android:layout_height = "match_parent">
+			
+			<TextView
+				android:id = "@+id/idLabel"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_marginTop = "8dp"
+				android:layout_marginEnd = "16dp"
+				android:text = "ID"
+				android:textSize = "@dimen/id_label_text_size"
+				app:layout_constraintEnd_toEndOf = "parent"
+				app:layout_constraintHorizontal_bias = "0.5"
+				app:layout_constraintStart_toEndOf = "@+id/nameLabel"
+				app:layout_constraintTop_toTopOf = "parent" />
+			
+			<TextView
+				android:id = "@+id/nameLabel"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_marginStart = "16dp"
+				android:text = "Name"
+				android:textSize = "@dimen/name_label_text_size"
+				app:layout_constraintBaseline_toBaselineOf = "@+id/idLabel"
+				app:layout_constraintEnd_toStartOf = "@+id/idLabel"
+				app:layout_constraintHorizontal_bias = "0.5"
+				app:layout_constraintHorizontal_chainStyle = "spread_inside"
+				app:layout_constraintStart_toStartOf = "parent" />
+			
+			<TextView
+				android:id = "@+id/mName"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_marginStart = "16dp"
+				android:layout_marginTop = "8dp"
+				android:layout_marginBottom = "8dp"
+				android:text = "Visal\nRajapakse"
+				android:textSize = "@dimen/name_text_size"
+				app:layout_constraintBottom_toBottomOf = "parent"
+				app:layout_constraintEnd_toStartOf = "@+id/mId"
+				app:layout_constraintHorizontal_bias = "0.5"
+				app:layout_constraintHorizontal_chainStyle = "spread_inside"
+				app:layout_constraintStart_toStartOf = "parent"
+				app:layout_constraintTop_toBottomOf = "@+id/nameLabel" />
+			
+			<TextView
+				android:id = "@+id/mId"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_marginTop = "8dp"
+				android:layout_marginEnd = "16dp"
+				android:layout_marginBottom = "8dp"
+				android:text = "2018387"
+				android:textSize = "@dimen/id_text_size"
+				app:layout_constraintBottom_toBottomOf = "parent"
+				app:layout_constraintEnd_toEndOf = "parent"
+				app:layout_constraintHorizontal_bias = "0.5"
+				app:layout_constraintStart_toEndOf = "@+id/mName"
+				app:layout_constraintTop_toBottomOf = "@+id/idLabel" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	</androidx.cardview.widget.CardView>
+	
+	<LinearLayout
+		android:id = "@+id/countLayer"
+		android:layout_width = "wrap_content"
+		android:layout_height = "wrap_content"
+		android:layout_marginEnd = "8dp"
+		android:layout_marginBottom = "8dp"
+		android:gravity = "center"
+		android:orientation = "vertical"
+		app:layout_constraintBottom_toTopOf = "@+id/mAddHotdog"
+		app:layout_constraintEnd_toEndOf = "parent"
+		app:layout_constraintStart_toStartOf = "parent"
+		app:layout_constraintTop_toBottomOf = "@+id/userInfo">
+		
+		<TextView
+			android:id = "@+id/mRoundName"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:text = "Preliminary Round"
+			android:textSize = "@dimen/round_name_text_size"
+			tools:layout_editor_absoluteX = "302dp"
+			tools:layout_editor_absoluteY = "172dp" />
+		
+		<TextView
+			android:id = "@+id/numberOfHotdogsLabel"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:layout_marginTop = "10dp"
+			android:text = "Number Of Hotdogs Eaten"
+			android:textSize = "@dimen/hotdog_amount_label_text_size"
+			tools:layout_editor_absoluteX = "302dp"
+			tools:layout_editor_absoluteY = "172dp" />
+		
+		<TextView
+			android:id = "@+id/mNumberOfHotdogs"
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:text = "0"
+			android:textSize = "@dimen/hotdog_amount_text_size"
+			tools:layout_editor_absoluteX = "340dp"
+			tools:layout_editor_absoluteY = "288dp" />
+	</LinearLayout>
+	
+	<ImageButton
+		android:id = "@+id/mSubmit"
+		android:layout_width = "0dp"
+		android:layout_height = "wrap_content"
+		android:layout_marginBottom = "54dp"
+		android:background = "@drawable/button_submit"
+		app:layout_constraintBottom_toBottomOf = "parent"
+		app:layout_constraintDimensionRatio = "w,1:1"
+		app:layout_constraintEnd_toEndOf = "parent"
+		app:layout_constraintHorizontal_bias = "0.5"
+		app:layout_constraintStart_toEndOf = "@+id/mReset"
+		app:srcCompat = "@drawable/ic_submit" />
+	
+	<ImageButton
+		android:id = "@+id/mReset"
+		android:layout_width = "0dp"
+		android:layout_height = "wrap_content"
+		android:layout_marginBottom = "54dp"
+		android:background = "@drawable/button_reset"
+		app:layout_constraintBottom_toBottomOf = "parent"
+		app:layout_constraintDimensionRatio = "w,1:1"
+		app:layout_constraintEnd_toStartOf = "@+id/mSubmit"
+		app:layout_constraintHorizontal_bias = "0.5"
+		app:layout_constraintStart_toStartOf = "parent"
+		app:srcCompat = "@drawable/ic_reset" />
+	
+	<Button
+		android:id = "@+id/mAddHotdog"
+		style = "?android:attr/borderlessButtonStyle"
+		android:layout_width = "0dp"
+		android:layout_height = "wrap_content"
+		android:layout_marginBottom = "41dp"
+		android:background = "@drawable/button_add"
+		android:text = "@string/activity_main_button_add"
+		android:textColor = "@color/colorWhite"
+		android:textSize = "@dimen/button_add_text_size"
+		app:layout_constraintBottom_toTopOf = "@+id/mReset"
+		app:layout_constraintDimensionRatio = "w,1:1"
+		app:layout_constraintEnd_toStartOf = "@+id/mRemoveHotdog"
+		app:layout_constraintHorizontal_bias = "0.5"
+		app:layout_constraintStart_toStartOf = "parent" />
+	
+	<Button
+		android:id = "@+id/mRemoveHotdog"
+		style = "?android:attr/borderlessButtonStyle"
+		android:layout_width = "0dp"
+		android:layout_height = "wrap_content"
+		android:layout_marginBottom = "41dp"
+		android:background = "@drawable/button_remove"
+		android:text = "@string/activity_main_button_reset"
+		android:textColor = "@color/colorWhite"
+		android:textSize = "@dimen/button_remove_text_size"
+		app:layout_constraintBottom_toTopOf = "@+id/mSubmit"
+		app:layout_constraintDimensionRatio = "w,1:1"
+		app:layout_constraintEnd_toEndOf = "parent"
+		app:layout_constraintHorizontal_bias = "0.5"
+		app:layout_constraintStart_toEndOf = "@+id/mAddHotdog" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
