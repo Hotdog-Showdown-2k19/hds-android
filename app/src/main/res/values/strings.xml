@@ -2,6 +2,9 @@
 	<string name = "app_name">Hotdog Showdown</string>
 	<string name = "activity_main_button_reset">-</string>
 	<string name = "activity_main_button_add">+</string>
+	<string name = "eatoff_round">Eatoff Round</string>
+	<string name = "preliminary_round">Preliminary Round</string>
+	<string name = "final_round">Final Round</string>
 	<array name = "round_names">
 		<item name = "round_one">Preliminary Round</item>
 		<item name = "round_one">EatOff Round</item>

@@ -1,6 +1,5 @@
 package com.github.akassharjun.hotdogshowdown
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -13,35 +12,36 @@ import com.beust.klaxon.Klaxon
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
-    var objectID = ""
-    var db = FirebaseFirestore.getInstance()
-    var userID = ""
-    var previousHotdogs = ""
+    /* Variables */
+    private var userDocumentID = ""
+    private val db = FirebaseFirestore.getInstance()
+    private var userID = ""
+    private var previousHotdogs = "0"
 
-    @SuppressLint("SetTextI18n")
+    /* Lifecycle */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ButterKnife.bind(this)
 
-        val user = Klaxon().parse<User>(intent.getStringExtra("user"))
+        val user = Klaxon().parse<User>(intent.getStringExtra("user"))!!
 
-        mName.text = "${user?.firstName}\n${user?.lastName}"
-        mId.text = user?.id
+        // Setting user info
+        val name = "${user.firstName}\n${user.lastName}"
+        mName.text = name
+        mId.text = user.id
+        userID = user.id
+        userDocumentID = intent.getStringExtra("userDocumentID")
 
-        userID = user?.id!!
-
-        objectID = intent.getStringExtra("objectID")
-
+        // onClick listeners
         mAddHotdog.setOnClickListener {
             var hotdogsEaten = Integer.parseInt(mNumberOfHotdogs.text.toString())
             hotdogsEaten++
             if (isAmountValid(hotdogsEaten)) {
                 mNumberOfHotdogs.text = hotdogsEaten.toString()
-                updateDatabase(mRoundName.text.toString(), hotdogsEaten.toString())
+                updateCollection(mRoundName.text.toString(), hotdogsEaten.toString())
             } else {
                 Toast.makeText(this, "Limit reached!", Toast.LENGTH_SHORT).show()
             }
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             hotdogsEaten--
             if (isAmountValid(hotdogsEaten)) {
                 mNumberOfHotdogs.text = hotdogsEaten.toString()
-                updateDatabase(mRoundName.text.toString(), hotdogsEaten.toString())
+                updateCollection(mRoundName.text.toString(), hotdogsEaten.toString())
             } else {
                 Toast.makeText(this, "There are no hotdogs to be removed!", Toast.LENGTH_SHORT).show()
             }
@@ -65,12 +65,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         mRoundName.setOnClickListener {
+            mNumberOfHotdogs.text = "0"
             showRoundSelectionDialog()
         }
-    }
-
-    private fun isAmountValid(hotdogsEaten: Int): Boolean {
-        return hotdogsEaten > -1 && hotdogsEaten < 21
     }
 
     override fun onStart() {
@@ -78,6 +75,10 @@ class MainActivity : AppCompatActivity() {
         showRoundSelectionDialog()
     }
 
+    /* Functions */
+    private fun isAmountValid(hotdogsEaten: Int): Boolean {
+        return hotdogsEaten > -1 && hotdogsEaten < 21
+    }
 
     private fun showRoundSelectionDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_round_selection, null)
@@ -89,19 +90,19 @@ class MainActivity : AppCompatActivity() {
         val finalRound = view.findViewById<Button>(R.id.finalRound)
 
         preliminaryRound.setOnClickListener {
-            mRoundName.text = "Preliminary Round"
+            mRoundName.text = getString(R.string.preliminary_round)
             getPreviousData(mRoundName.text.toString())
             roundSelectionDialog.dismiss()
         }
 
         eatOffRound.setOnClickListener {
-            mRoundName.text = "Eatoff Round"
+            mRoundName.text = getString(R.string.eatoff_round)
             getPreviousData(mRoundName.text.toString())
             roundSelectionDialog.dismiss()
         }
 
         finalRound.setOnClickListener {
-            mRoundName.text = "Final Round"
+            mRoundName.text = getString(R.string.final_round)
             getPreviousData(mRoundName.text.toString())
             roundSelectionDialog.dismiss()
         }
@@ -112,33 +113,31 @@ class MainActivity : AppCompatActivity() {
         roundSelectionDialog.show()
     }
 
-    private fun updateDatabase(collectionName: String, amount: String) {
-        val roundCollection = db.collection(collectionName)
+    private fun updateCollection(collectionName: String, amount: String) {
+        val collectionReference = db.collection(collectionName)
 
         val map = HashMap<String, String>()
         map["userID"] = userID
         map["Total Hotdogs Eaten"] = amount
 
-        roundCollection.document(objectID).set(map)
+        collectionReference.document(userDocumentID).set(map)
     }
 
-    fun onSubmit() {
+    private fun onSubmit() {
         val TAG = "ONSUBMIT"
-        val COLLECTION_NAME = "Total Hotdogs Eaten"
-        var amount = 0
-        db.collection(COLLECTION_NAME).whereEqualTo("userID", userID).get()
+        val collectionName = "Total Hotdog Count"
+        var amount: Int
+        db.collection(collectionName).whereEqualTo("userID", userID).get()
                 .addOnSuccessListener { documents ->
                     if (documents.size() == 0) {
-                        updateDatabase(COLLECTION_NAME, mNumberOfHotdogs.text.toString())
+                        updateCollection(collectionName, mNumberOfHotdogs.text.toString())
                         amount = mNumberOfHotdogs.text.toString().toInt()
                     } else {
-                        for (document in documents) {
-                            amount = document["Total Hotdogs Eaten"].toString().toInt() + mNumberOfHotdogs.text.toString().toInt() - previousHotdogs.toInt()
-                            Log.d("PREVIOUS", previousHotdogs)
-                            Log.d("AMOUNT", amount.toString())
-                            updateDatabase(COLLECTION_NAME, amount.toString())
-                        }
+                        val document = documents.documents[0]
+                        amount = document["Total Hotdogs Eaten"].toString().toInt() + mNumberOfHotdogs.text.toString().toInt() - previousHotdogs.toInt()
+                        updateCollection(collectionName, amount.toString())
                     }
+                    // Passing values to final activity.
                     val intent = Intent(this@MainActivity, FinalActivity::class.java)
                     intent.putExtra("totalAmount", amount.toString())
                     intent.putExtra("amount", mNumberOfHotdogs.text.toString())
@@ -149,18 +148,23 @@ class MainActivity : AppCompatActivity() {
                 }
     }
 
-    fun getPreviousData(collectionName: String) {
+    private fun getPreviousData(collectionName: String) {
         val TAG = "GET PREVIOUS DATA"
         db.collection(collectionName).whereEqualTo("userID", userID).get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         mNumberOfHotdogs.text = document["Total Hotdogs Eaten"].toString()
-                        previousHotdogs = mNumberOfHotdogs.text.toString()
+                        previousHotdogs = document["Total Hotdogs Eaten"].toString()
                     }
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents: ", exception)
                 }
+    }
+
+    private fun debug() {
+        val message = "Object ID : $userDocumentID \n User ID : $userID \n Round Name : ${mRoundName.text}"
+        Log.d("HGS", message)
     }
 }
 

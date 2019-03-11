@@ -96,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
                             val user = document.toObject(User::class.java)
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("user", Klaxon().toJsonString(user))
-                            intent.putExtra("objectID", document.id)
+                            intent.putExtra("userDocumentID", document.id)
                             startActivity(intent)
                         }
                     }

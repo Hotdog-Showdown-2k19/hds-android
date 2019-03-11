@@ -50,7 +50,7 @@ dependencies {
 
     implementation 'com.beust:klaxon:5.0.1'
 
-
+    implementation 'com.dynamitechetan.flowinggradient:flowinggradient:1.1'
 }
 repositories {
     mavenCentral()
