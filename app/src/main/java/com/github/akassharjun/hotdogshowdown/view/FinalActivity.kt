@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.github.akassharjun.hotdogshowdown.R
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_final.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class FinalActivity : AppCompatActivity() {
 
@@ -25,7 +24,6 @@ class FinalActivity : AppCompatActivity() {
 
         calculateTotalHotdogs(userID, previousAmount, newAmount)
 
-        mTotal.text = amount.toString()
         mCurrentRound.text = newAmount
 
         mNext.setOnClickListener {
@@ -41,11 +39,12 @@ class FinalActivity : AppCompatActivity() {
         db.collection(collectionName).whereEqualTo("userID", userID).get()
                 .addOnSuccessListener { documents ->
                     if (documents.size() == 0) {
+                        mTotal.text = newAmount
                         updateTotalCollection(userID, newAmount)
-                        amount = mNumberOfHotdogs.text.toString().toInt()
                     } else {
                         val document = documents.documents[0]
                         amount = document["Total Hotdogs Eaten"].toString().toInt() + newAmount.toInt() - previousHotdogs.toInt()
+                        mTotal.text = amount.toString()
                         updateTotalCollection(userID, amount.toString())
                     }
                 }

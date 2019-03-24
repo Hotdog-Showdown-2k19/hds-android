@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity() {
 
         mReset.setOnClickListener {
             showConfirmationDialog("reset")
+            mNumberOfHotdogs.text = "0"
+            previousHotdogs = "0"
+            updateCollection(mRoundName.text.toString(), "0")
         }
 
         mSubmit.setOnClickListener {
@@ -70,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         mRoundName.setOnClickListener {
-            mNumberOfHotdogs.text = "0"
             showRoundSelectionDialog()
         }
     }
@@ -134,17 +136,10 @@ class MainActivity : AppCompatActivity() {
         roundSelectionDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 
         val preliminaryRound = view.findViewById<Button>(R.id.preliminaryRound)
-        val eatOffRound = view.findViewById<Button>(R.id.eatOffRound)
         val finalRound = view.findViewById<Button>(R.id.finalRound)
 
         preliminaryRound.setOnClickListener {
             mRoundName.text = getString(R.string.preliminary_round)
-            getPreviousData(mRoundName.text.toString())
-            roundSelectionDialog.dismiss()
-        }
-
-        eatOffRound.setOnClickListener {
-            mRoundName.text = getString(R.string.eatoff_round)
             getPreviousData(mRoundName.text.toString())
             roundSelectionDialog.dismiss()
         }
