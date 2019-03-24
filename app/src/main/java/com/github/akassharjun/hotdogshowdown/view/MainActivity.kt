@@ -124,7 +124,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun reset() {
-
+        mNumberOfHotdogs.text = "0"
+        updateCollection(mRoundName.text.toString(), "0")
     }
 
     private fun showRoundSelectionDialog() {
@@ -169,7 +170,6 @@ class MainActivity : AppCompatActivity() {
 
         collectionReference.document(documentID).set(map)
     }
-
 
 
     private fun getPreviousData(collectionName: String) {
