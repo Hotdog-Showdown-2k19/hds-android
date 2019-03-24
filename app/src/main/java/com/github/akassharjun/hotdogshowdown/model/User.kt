@@ -1,4 +1,4 @@
-package com.github.akassharjun.hotdogshowdown
+package com.github.akassharjun.hotdogshowdown.model
 
 data class User(
         var id: String = "",

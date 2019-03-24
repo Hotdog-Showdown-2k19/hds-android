@@ -6,7 +6,7 @@
 	android:layout_height = "match_parent"
 	android:background = "@drawable/background"
 	android:descendantFocusability = "afterDescendants"
-	tools:context = ".LoginActivity">
+	tools:context = ".view.LoginActivity">
 	
 	<ImageView
 		android:id = "@+id/logo"
@@ -52,7 +52,7 @@
 			android:layout_marginBottom = "22dp"
 			android:background = "@drawable/edit_text_yellow"
 			android:ems = "10"
-			android:hint = "Enter user ID"
+			android:hint = "Enter Passcode"
 			android:imeOptions = "actionSend"
 			android:inputType = "textPersonName"
 			android:padding = "@dimen/edittext_user_id_padding"
@@ -73,7 +73,7 @@
 			android:layout_marginEnd = "32dp"
 			android:layout_marginBottom = "9dp"
 			android:background = "@drawable/button_login"
-			android:text = "Login"
+			android:text = "Next"
 			android:textColor = "@color/colorWhite"
 			app:layout_constraintBottom_toBottomOf = "parent"
 			app:layout_constraintEnd_toEndOf = "parent"
@@ -87,7 +87,7 @@
 			android:layout_marginStart = "8dp"
 			android:layout_marginTop = "8dp"
 			android:layout_marginBottom = "11dp"
-			android:text = "User ID"
+			android:text = "Passcode"
 			android:textColor = "@color/colorBrown"
 			app:layout_constraintBottom_toTopOf = "@+id/mPasscode"
 			app:layout_constraintStart_toStartOf = "@+id/mPasscode"

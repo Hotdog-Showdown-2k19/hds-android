@@ -1,4 +1,4 @@
-package com.github.akassharjun.hotdogshowdown
+package com.github.akassharjun.hotdogshowdown.view
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
 import com.beust.klaxon.Klaxon
+import com.github.akassharjun.hotdogshowdown.R
+import com.github.akassharjun.hotdogshowdown.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 

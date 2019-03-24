@@ -6,7 +6,7 @@
 	android:layout_height = "match_parent"
 	android:descendantFocusability="afterDescendants"
 	android:background="@drawable/background"
-	tools:context = ".LoginActivity">
+	tools:context = ".view.LoginActivity">
 	
 	<ImageView
 		android:id = "@+id/logo"

@@ -1,4 +1,4 @@
-package com.github.akassharjun.hotdogshowdown
+package com.github.akassharjun.hotdogshowdown.view
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +13,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.beust.klaxon.Klaxon
+import com.github.akassharjun.hotdogshowdown.R
+import com.github.akassharjun.hotdogshowdown.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*
@@ -82,6 +84,13 @@ class LoginActivity : AppCompatActivity() {
             updateViews(View.GONE)
             retrieveUserFromDatabase()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this@LoginActivity, VerificationActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun hideKeyboard() {
