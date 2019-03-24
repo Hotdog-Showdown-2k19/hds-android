@@ -2,22 +2,21 @@
 <selector xmlns:android = "http://schemas.android.com/apk/res/android">
 	<item android:state_pressed = "true">
 		<shape android:shape = "oval">
-			<size android:width="90dp" android:height="90dp"/>
+			<size android:width = "90dp" android:height = "90dp" />
 			
 			<gradient android:angle = "-90" android:endColor = "@color/colorBlueDark" android:startColor = "@color/colorBlueDark" />
 		</shape>
 	</item>
 	<item android:state_focused = "true">
 		<shape android:shape = "oval">
-			<size android:width="90dp" android:height="90dp"/>
-			
-			<solid android:color = "@color/colorBlue" />
+			<size android:width = "90dp" android:height = "90dp" />
+			<gradient android:angle = "-90" android:endColor = "@color/colorBlueDark" android:startColor = "@color/colorBlue" />
 		</shape>
 	</item>
 	<item>
 		<shape android:shape = "oval">
-			<size android:width="90dp" android:height="90dp"/>
-			<gradient android:angle = "-90" android:endColor = "@color/colorBlue" android:startColor = "@color/colorBlue" />
+			<size android:width = "90dp" android:height = "90dp" />
+			<gradient android:angle = "-90" android:endColor = "@color/colorBlueDark" android:startColor = "@color/colorBlue" />
 		</shape>
 	</item>
 </selector>
