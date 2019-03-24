@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     /* Variables */
-    private var userDocumentID = ""
+    private var documentID = ""
     private val db = FirebaseFirestore.getInstance()
     private var userID = ""
     private var previousHotdogs = "0"
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         mName.text = name
         mId.text = user.id
         userID = user.id
-        userDocumentID = intent.getStringExtra("userDocumentID")
+        documentID = intent.getStringExtra("documentID")
 
         // onClick listeners
         mAddHotdog.setOnClickListener {
@@ -58,10 +59,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mReset.setOnClickListener { mNumberOfHotdogs.text = "0" }
+        mReset.setOnClickListener {
+            showConfirmationDialog("reset")
+        }
 
         mSubmit.setOnClickListener {
-            onSubmit()
+            showConfirmationDialog("submit")
         }
 
         mRoundName.setOnClickListener {
@@ -78,6 +81,48 @@ class MainActivity : AppCompatActivity() {
     /* Functions */
     private fun isAmountValid(hotdogsEaten: Int): Boolean {
         return hotdogsEaten > -1 && hotdogsEaten < 21
+    }
+
+    private fun showConfirmationDialog(type: String) {
+        val view = layoutInflater.inflate(R.layout.dialog_confirmation, null)
+        val confirmationDialog = android.app.AlertDialog.Builder(this@MainActivity).create()
+        confirmationDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
+
+        val positive = view.findViewById<Button>(R.id.positive)
+        val negative = view.findViewById<Button>(R.id.negative)
+        val message = view.findViewById<TextView>(R.id.message)
+
+        if (type == "submit") {
+            message.text = "Are you sure that you want to submit the data?"
+        } else {
+            message.text = "Are you sure that you want to reset the data?"
+        }
+
+        positive.setOnClickListener {
+            if (type == "submit") {
+                val intent = Intent(this@MainActivity, FinalActivity::class.java)
+                intent.putExtra("newAmount", mNumberOfHotdogs.text.toString())
+                intent.putExtra("previousAmount", previousHotdogs)
+                intent.putExtra("userID", userID)
+                intent.putExtra("documentID", documentID)
+                startActivity(intent)
+            } else {
+                reset()
+            }
+            confirmationDialog.dismiss()
+        }
+
+        negative.setOnClickListener {
+            confirmationDialog.dismiss()
+        }
+
+        confirmationDialog.setCancelable(false)
+        confirmationDialog.setView(view)
+        confirmationDialog.show()
+    }
+
+    private fun reset() {
+
     }
 
     private fun showRoundSelectionDialog() {
@@ -120,33 +165,10 @@ class MainActivity : AppCompatActivity() {
         map["userID"] = userID
         map["Total Hotdogs Eaten"] = amount
 
-        collectionReference.document(userDocumentID).set(map)
+        collectionReference.document(documentID).set(map)
     }
 
-    private fun onSubmit() {
-        val TAG = "ONSUBMIT"
-        val collectionName = "Total Hotdog Count"
-        var amount: Int
-        db.collection(collectionName).whereEqualTo("userID", userID).get()
-                .addOnSuccessListener { documents ->
-                    if (documents.size() == 0) {
-                        updateCollection(collectionName, mNumberOfHotdogs.text.toString())
-                        amount = mNumberOfHotdogs.text.toString().toInt()
-                    } else {
-                        val document = documents.documents[0]
-                        amount = document["Total Hotdogs Eaten"].toString().toInt() + mNumberOfHotdogs.text.toString().toInt() - previousHotdogs.toInt()
-                        updateCollection(collectionName, amount.toString())
-                    }
-                    // Passing values to final activity.
-                    val intent = Intent(this@MainActivity, FinalActivity::class.java)
-                    intent.putExtra("totalAmount", amount.toString())
-                    intent.putExtra("amount", mNumberOfHotdogs.text.toString())
-                    startActivity(intent)
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents: ", exception)
-                }
-    }
+
 
     private fun getPreviousData(collectionName: String) {
         val TAG = "GET PREVIOUS DATA"
@@ -160,11 +182,6 @@ class MainActivity : AppCompatActivity() {
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents: ", exception)
                 }
-    }
-
-    private fun debug() {
-        val message = "Object ID : $userDocumentID \n User ID : $userID \n Round Name : ${mRoundName.text}"
-        Log.d("HGS", message)
     }
 }
 

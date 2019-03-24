@@ -24,7 +24,7 @@
 			<View
 				android:id = "@+id/view"
 				android:layout_width = "0dp"
-				android:layout_height = "50dp"
+				android:layout_height = "@dimen/dialog_bar"
 				android:background = "@color/colorRed"
 				app:layout_constraintEnd_toEndOf = "parent"
 				app:layout_constraintStart_toStartOf = "parent"

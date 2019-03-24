@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
 
         val userTwo = User("HDS#002", "Visal", "Rajapakse", "visalrajapakse@gmail.com", "0777734578", "Male", Date().time)
 
-        val userThree = User("HDS#003", "Dinuka", "Piliyagama", "dinukapiliyagama@gmail.com", "0723423948", "Male", Date().time)
+        val userThree = User("HDS#003", "Dinuka", "Piyadigama", "dinukapiliyagama@gmail.com", "0723423948", "Male", Date().time)
 
         val userFour = User("HDS#004", "Archana", "", "archana@gmail.com", "0713323094", "Female", Date().time)
 
@@ -66,12 +66,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
 //        createUsers()
 
         mUserID.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-//                onLogin()
+                hideKeyboard()
+                updateViews(View.GONE)
+                retrieveUserFromDatabase()
                 return@setOnKeyListener true
             }
             return@setOnKeyListener false
@@ -81,6 +82,17 @@ class LoginActivity : AppCompatActivity() {
             updateViews(View.GONE)
             retrieveUserFromDatabase()
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = this.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(this)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun retrieveUserFromDatabase() {
@@ -96,7 +108,7 @@ class LoginActivity : AppCompatActivity() {
                             val user = document.toObject(User::class.java)
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             intent.putExtra("user", Klaxon().toJsonString(user))
-                            intent.putExtra("userDocumentID", document.id)
+                            intent.putExtra("documentID", document.id)
                             startActivity(intent)
                         }
                     }
