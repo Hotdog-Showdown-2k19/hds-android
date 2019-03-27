@@ -3,15 +3,18 @@
 	xmlns:app = "http://schemas.android.com/apk/res-auto"
 	xmlns:tools = "http://schemas.android.com/tools"
 	android:layout_width = "match_parent"
-	android:layout_height = "match_parent"
+	android:layout_height = "wrap_content"
 	android:orientation = "vertical">
 	
 	<androidx.cardview.widget.CardView
 		android:layout_width = "0dp"
 		android:layout_height = "wrap_content"
-		android:layout_marginStart = "32dp"
-		android:layout_marginEnd = "32dp"
+		android:layout_marginStart = "24dp"
+		android:layout_marginTop = "32dp"
+		android:layout_marginEnd = "24dp"
+		android:layout_marginBottom = "32dp"
 		app:cardCornerRadius = "20dp"
+		app:layout_constraintBottom_toBottomOf = "parent"
 		app:layout_constraintEnd_toEndOf = "parent"
 		app:layout_constraintStart_toStartOf = "parent"
 		app:layout_constraintTop_toTopOf = "parent">
@@ -19,30 +22,16 @@
 		
 		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width = "match_parent"
-			android:layout_height = "match_parent">
+			android:layout_height = "wrap_content">
 			
 			<View
 				android:id = "@+id/view"
 				android:layout_width = "0dp"
 				android:layout_height = "@dimen/dialog_bar"
-				android:background = "@drawable/button_login"
+				android:background = "@color/colorRed"
 				app:layout_constraintEnd_toEndOf = "parent"
 				app:layout_constraintStart_toStartOf = "parent"
 				app:layout_constraintTop_toTopOf = "parent" />
-			
-			<TextView
-				android:id = "@+id/message"
-				android:layout_width = "0dp"
-				android:layout_height = "wrap_content"
-				android:layout_marginStart = "32dp"
-				android:layout_marginTop = "24dp"
-				android:layout_marginEnd = "32dp"
-				android:text = "The User ID you entered is invalid, please try again!"
-				android:textAlignment = "center"
-				android:textSize = "@dimen/dialog_text"
-				app:layout_constraintEnd_toEndOf = "parent"
-				app:layout_constraintStart_toStartOf = "parent"
-				app:layout_constraintTop_toBottomOf = "@+id/view" />
 			
 			<TextView
 				android:id = "@+id/textView3"
@@ -50,29 +39,25 @@
 				android:layout_height = "wrap_content"
 				android:layout_marginStart = "8dp"
 				android:layout_marginEnd = "8dp"
-				android:text = "Error"
-				android:textColor="@color/colorWhite"
+				android:text = "Select Table Number"
+				android:textColor = "@color/colorWhite"
 				android:textSize = "@dimen/hotdog_amount_label_text_size"
 				app:layout_constraintBottom_toBottomOf = "@+id/view"
 				app:layout_constraintEnd_toEndOf = "parent"
 				app:layout_constraintStart_toStartOf = "parent"
 				app:layout_constraintTop_toTopOf = "@+id/view" />
 			
-			<Button
-				android:id = "@+id/tryAgain"
-				android:layout_width = "0dp"
-				android:layout_height = "wrap_content"
-				android:layout_marginStart = "32dp"
-				android:layout_marginTop = "24dp"
-				android:layout_marginEnd = "32dp"
-				android:layout_marginBottom = "24dp"
-				android:background = "@drawable/button_login"
-				android:text = "Try again"
-				android:textColor = "@color/colorWhite"
+			<ListView
+				android:id = "@+id/tableList"
+				android:layout_width = "wrap_content"
+				android:layout_height = "500dp"
+				android:layout_marginStart = "8dp"
+				android:layout_marginEnd = "8dp"
+				android:layout_marginBottom = "8dp"
 				app:layout_constraintBottom_toBottomOf = "parent"
 				app:layout_constraintEnd_toEndOf = "parent"
 				app:layout_constraintStart_toStartOf = "parent"
-				app:layout_constraintTop_toBottomOf = "@+id/message" />
+				app:layout_constraintTop_toBottomOf = "@+id/view" />
 		
 		</androidx.constraintlayout.widget.ConstraintLayout>
 	

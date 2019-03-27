@@ -6,6 +6,8 @@
 	<string name = "preliminary_round">Preliminary Round</string>
 	<string name = "final_round">Final Round</string>
 	<string name = "activity_final_congratulations">Congratulations!</string>
+	<string name = "submit_data">Are you sure that you want to submit the data?</string>
+	<string name = "reset_data">Are you sure that you want to reset the data?</string>
 	<array name = "round_names">
 		<item name = "round_one">Preliminary Round</item>
 		<item name = "round_one">EatOff Round</item>

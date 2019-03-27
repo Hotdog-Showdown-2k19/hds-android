@@ -1,50 +1,43 @@
 package com.github.akassharjun.hotdogshowdown.view
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
-import com.beust.klaxon.Klaxon
 import com.github.akassharjun.hotdogshowdown.R
-import com.github.akassharjun.hotdogshowdown.model.User
-import com.google.firebase.firestore.FirebaseFirestore
+import com.github.akassharjun.hotdogshowdown.presenter.MainActivityPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
 
-    /* Variables */
-    private var documentID = ""
-    private val db = FirebaseFirestore.getInstance()
-    private var userID = ""
+    /* VARIABLES */
     private var previousHotdogs = "0"
+    private val presenter = MainActivityPresenter(this)
+    private var round = ""
+    private var userID = ""
+    val tableNumber = ""
 
-    /* Lifecycle */
+    /* LIFECYCLE */
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ButterKnife.bind(this)
 
-        val user = Klaxon().parse<User>(intent.getStringExtra("user"))!!
+        //setting user info
+        mName.text = "${intent.getStringExtra("firstName")}\n${intent.getStringExtra("lastName").capitalize()}"
+        userID = intent.getStringExtra("id")
+        mId.text = "HDS#00$userID"
 
-        // Setting user info
-        val name = "${user.firstName}\n${user.lastName}"
-        mName.text = name
-        mId.text = user.id
-        userID = user.id
-        documentID = intent.getStringExtra("documentID")
-
-        // onClick listeners
+        /* ON CLICK LISTENERS */
         mAddHotdog.setOnClickListener {
             var hotdogsEaten = Integer.parseInt(mNumberOfHotdogs.text.toString())
             hotdogsEaten++
             if (isAmountValid(hotdogsEaten)) {
                 mNumberOfHotdogs.text = hotdogsEaten.toString()
-                updateCollection(mRoundName.text.toString(), hotdogsEaten.toString())
+                presenter.updateCollection(userID, round, hotdogsEaten.toString())
             } else {
                 Toast.makeText(this, "Limit reached!", Toast.LENGTH_SHORT).show()
             }
@@ -55,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             hotdogsEaten--
             if (isAmountValid(hotdogsEaten)) {
                 mNumberOfHotdogs.text = hotdogsEaten.toString()
-                updateCollection(mRoundName.text.toString(), hotdogsEaten.toString())
+                presenter.updateCollection(userID, round, hotdogsEaten.toString())
             } else {
                 Toast.makeText(this, "There are no hotdogs to be removed!", Toast.LENGTH_SHORT).show()
             }
@@ -63,9 +56,6 @@ class MainActivity : AppCompatActivity() {
 
         mReset.setOnClickListener {
             showConfirmationDialog("reset")
-            mNumberOfHotdogs.text = "0"
-            previousHotdogs = "0"
-            updateCollection(mRoundName.text.toString(), "0")
         }
 
         mSubmit.setOnClickListener {
@@ -79,10 +69,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        showRoundSelectionDialog()
+        showTablePickerDialog()
     }
 
-    /* Functions */
+    /* FUNCTIONS */
     private fun isAmountValid(hotdogsEaten: Int): Boolean {
         return hotdogsEaten > -1 && hotdogsEaten < 21
     }
@@ -97,21 +87,23 @@ class MainActivity : AppCompatActivity() {
         val message = view.findViewById<TextView>(R.id.message)
 
         if (type == "submit") {
-            message.text = "Are you sure that you want to submit the data?"
+            message.text = getString(R.string.submit_data)
         } else {
-            message.text = "Are you sure that you want to reset the data?"
+            message.text = getString(R.string.reset_data)
         }
 
         positive.setOnClickListener {
             if (type == "submit") {
-                val intent = Intent(this@MainActivity, FinalActivity::class.java)
-                intent.putExtra("newAmount", mNumberOfHotdogs.text.toString())
-                intent.putExtra("previousAmount", previousHotdogs)
-                intent.putExtra("userID", userID)
-                intent.putExtra("documentID", documentID)
+//                val intent = Intent(this@MainActivity, ResultActivity::class.java)
+//                intent.putExtra("newAmount", mNumberOfHotdogs.text.toString())
+//                intent.putExtra("previousAmount", previousHotdogs)
+//                intent.putExtra("userID", userID)
+//                intent.putExtra("documentID", documentID)
                 startActivity(intent)
             } else {
-                reset()
+//                mNumberOfHotdogs.text = "0"
+//                previousHotdogs = "0"
+//                presenter.updateCollection(userID, mRoundName.text.toString(), "0")
             }
             confirmationDialog.dismiss()
         }
@@ -125,11 +117,6 @@ class MainActivity : AppCompatActivity() {
         confirmationDialog.show()
     }
 
-    private fun reset() {
-        mNumberOfHotdogs.text = "0"
-        updateCollection(mRoundName.text.toString(), "0")
-    }
-
     private fun showRoundSelectionDialog() {
         val view = layoutInflater.inflate(R.layout.dialog_round_selection, null)
         val roundSelectionDialog = android.app.AlertDialog.Builder(this@MainActivity).create()
@@ -140,13 +127,13 @@ class MainActivity : AppCompatActivity() {
 
         preliminaryRound.setOnClickListener {
             mRoundName.text = getString(R.string.preliminary_round)
-            getPreviousData(mRoundName.text.toString())
+            round = "round_1"
             roundSelectionDialog.dismiss()
         }
 
         finalRound.setOnClickListener {
             mRoundName.text = getString(R.string.final_round)
-            getPreviousData(mRoundName.text.toString())
+            round = "round_2"
             roundSelectionDialog.dismiss()
         }
 
@@ -156,29 +143,67 @@ class MainActivity : AppCompatActivity() {
         roundSelectionDialog.show()
     }
 
-    private fun updateCollection(collectionName: String, amount: String) {
-        val collectionReference = db.collection(collectionName)
-
-        val map = HashMap<String, String>()
-        map["userID"] = userID
-        map["Total Hotdogs Eaten"] = amount
-
-        collectionReference.document(documentID).set(map)
+    override fun setPreviousData(previousAmount: String) {
+        mNumberOfHotdogs.text = previousAmount
+        previousHotdogs = previousAmount
     }
 
+    override fun showAPIErrorDialog() {
+        val view = layoutInflater.inflate(R.layout.dialog_invalid_user, null)
+        val apiErrorDialog = android.app.AlertDialog.Builder(this@MainActivity).create()
+        apiErrorDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 
-    private fun getPreviousData(collectionName: String) {
-        val TAG = "GET PREVIOUS DATA"
-        db.collection(collectionName).whereEqualTo("userID", userID).get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        mNumberOfHotdogs.text = document["Total Hotdogs Eaten"].toString()
-                        previousHotdogs = document["Total Hotdogs Eaten"].toString()
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents: ", exception)
-                }
+        val message = view.findViewById<TextView>(R.id.message)
+        val tryAgain = view.findViewById<Button>(R.id.tryAgain)
+
+        message.text = "There was an error with the API, please try again!"
+
+        tryAgain.setOnClickListener {
+            presenter.updateCollection(userID, round, mNumberOfHotdogs.text.toString())
+        }
+
+        apiErrorDialog.setCancelable(false)
+        apiErrorDialog.setView(view)
+        apiErrorDialog.show()
+    }
+
+    fun showTablePickerDialog() {
+
+        val view = layoutInflater.inflate(R.layout.dialog_table_selection, null)
+        val tablePickerDialog = android.app.AlertDialog.Builder(this@MainActivity).create()
+        tablePickerDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
+
+        val listView = view.findViewById<ListView>(R.id.tableList)
+
+        val listItems = mutableListOf<String>()
+
+        for (i in 1..20) {
+            listItems.add("Table $i")
+        }
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems)
+
+        listView.adapter = adapter
+
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            // value of item that is clicked
+            val tableNumber = listView.getItemAtPosition(position) as String
+
+            // Toast the values
+            Toast.makeText(applicationContext,
+                    "Position :$position\nItem Value : $tableNumber", Toast.LENGTH_LONG)
+                    .show()
+
+            tablePickerDialog.dismiss()
+
+            showRoundSelectionDialog()
+        }
+
+        tablePickerDialog.setCancelable(false)
+        tablePickerDialog.setView(view)
+        tablePickerDialog.show()
+
+
     }
 }
 
