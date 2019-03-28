@@ -95,11 +95,11 @@ class MainActivityPresenter(val view: View) {
                         if (response != null) {
                             if (rName == "firstR") {
                                 Log.d("API RESPONSE", response.toString())
-                                if (response.get("round_1").toString() != null) {
+                                if (response.get("round_1") != null) {
                                     view.setPreviousData(response.get("round_1").toString())
                                 }
                             } else {
-                                if (response.get("round_2").toString() != null) {
+                                if (response.get("round_2") != null) {
                                     view.setPreviousData(response.get("round_2").toString())
                                 }
                             }

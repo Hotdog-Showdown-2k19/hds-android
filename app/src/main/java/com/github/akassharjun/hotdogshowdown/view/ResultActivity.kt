@@ -4,10 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.github.akassharjun.hotdogshowdown.R
-import com.github.akassharjun.hotdogshowdown.presenter.ResultActivityPresenter
 import kotlinx.android.synthetic.main.activity_final.*
 
-class ResultActivity : AppCompatActivity(), ResultActivityPresenter.View {
+class ResultActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
