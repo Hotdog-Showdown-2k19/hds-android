@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity(), LoginActivityPresenter.View {
     }
 
     override fun showErrorDialog() {
-        val view = layoutInflater.inflate(R.layout.dialog_invalid_user, null)
+        val view = layoutInflater.inflate(R.layout.dialog_error, null)
         val errorDialog = android.app.AlertDialog.Builder(this@LoginActivity).create()
         errorDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 

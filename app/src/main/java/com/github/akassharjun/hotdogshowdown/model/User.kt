@@ -8,6 +8,4 @@ data class User(
         var phoneNumber: String = "",
         var gender: String = "",
         var date: Long = 0
-) {
-    constructor() : this("", "", "", "", "", "", 0)
-}
+)

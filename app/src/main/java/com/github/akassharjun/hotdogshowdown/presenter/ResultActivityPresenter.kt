@@ -11,9 +11,6 @@ class ResultActivityPresenter(val view: View) {
 
     }
 
-    fun updateHotdogs(){
-
-    }
 
     interface View {
 

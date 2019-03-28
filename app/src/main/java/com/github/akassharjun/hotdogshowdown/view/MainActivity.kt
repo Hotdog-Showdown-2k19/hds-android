@@ -1,6 +1,7 @@
 package com.github.akassharjun.hotdogshowdown.view
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.*
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
     private val presenter = MainActivityPresenter(this)
     private var round = ""
     private var userID = ""
-    val tableNumber = ""
+    private var tableNumber = ""
 
     /* LIFECYCLE */
     @SuppressLint("SetTextI18n")
@@ -31,13 +32,18 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
         userID = intent.getStringExtra("id")
         mId.text = "HDS#00$userID"
 
+        presenter.initializeRecord(userID)
+        showTablePickerDialog()
+        mNumberOfHotdogs.text = "0"
+
         /* ON CLICK LISTENERS */
         mAddHotdog.setOnClickListener {
             var hotdogsEaten = Integer.parseInt(mNumberOfHotdogs.text.toString())
             hotdogsEaten++
             if (isAmountValid(hotdogsEaten)) {
                 mNumberOfHotdogs.text = hotdogsEaten.toString()
-                presenter.updateCollection(userID, round, hotdogsEaten.toString())
+                presenter.incrementHotdog(userID, round)
+                presenter.updateCollection(tableNumber, hotdogsEaten.toString())
             } else {
                 Toast.makeText(this, "Limit reached!", Toast.LENGTH_SHORT).show()
             }
@@ -48,7 +54,8 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
             hotdogsEaten--
             if (isAmountValid(hotdogsEaten)) {
                 mNumberOfHotdogs.text = hotdogsEaten.toString()
-                presenter.updateCollection(userID, round, hotdogsEaten.toString())
+                presenter.decrementHotdog(userID, round)
+                presenter.updateCollection(tableNumber, hotdogsEaten.toString())
             } else {
                 Toast.makeText(this, "There are no hotdogs to be removed!", Toast.LENGTH_SHORT).show()
             }
@@ -65,11 +72,6 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
         mRoundName.setOnClickListener {
             showRoundSelectionDialog()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        showTablePickerDialog()
     }
 
     /* FUNCTIONS */
@@ -89,21 +91,18 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
         if (type == "submit") {
             message.text = getString(R.string.submit_data)
         } else {
-            message.text = getString(R.string.reset_data)
+            message.text = getString(R.string.exit_main)
         }
 
         positive.setOnClickListener {
             if (type == "submit") {
-//                val intent = Intent(this@MainActivity, ResultActivity::class.java)
-//                intent.putExtra("newAmount", mNumberOfHotdogs.text.toString())
-//                intent.putExtra("previousAmount", previousHotdogs)
-//                intent.putExtra("userID", userID)
-//                intent.putExtra("documentID", documentID)
+                val intent = Intent(this@MainActivity, ResultActivity::class.java)
+                intent.putExtra("amount", mNumberOfHotdogs.text.toString())
                 startActivity(intent)
             } else {
-//                mNumberOfHotdogs.text = "0"
-//                previousHotdogs = "0"
-//                presenter.updateCollection(userID, mRoundName.text.toString(), "0")
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
             confirmationDialog.dismiss()
         }
@@ -127,13 +126,15 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
 
         preliminaryRound.setOnClickListener {
             mRoundName.text = getString(R.string.preliminary_round)
-            round = "round_1"
+            round = "FR"
+            presenter.getPreviousData(userID, round)
             roundSelectionDialog.dismiss()
         }
 
         finalRound.setOnClickListener {
             mRoundName.text = getString(R.string.final_round)
-            round = "round_2"
+            round = "LR"
+            presenter.getPreviousData(userID, round)
             roundSelectionDialog.dismiss()
         }
 
@@ -148,18 +149,24 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
         previousHotdogs = previousAmount
     }
 
-    override fun showAPIErrorDialog() {
-        val view = layoutInflater.inflate(R.layout.dialog_invalid_user, null)
+    override fun showAPIErrorDialog(type: String) {
+        val view = layoutInflater.inflate(R.layout.dialog_error, null)
         val apiErrorDialog = android.app.AlertDialog.Builder(this@MainActivity).create()
         apiErrorDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 
         val message = view.findViewById<TextView>(R.id.message)
         val tryAgain = view.findViewById<Button>(R.id.tryAgain)
 
-        message.text = "There was an error with the API, please try again!"
+        message.text = getString(R.string.api_error)
 
         tryAgain.setOnClickListener {
-            presenter.updateCollection(userID, round, mNumberOfHotdogs.text.toString())
+            when (type) {
+                "increment" -> presenter.incrementHotdog(userID, round)
+                "initialize" -> presenter.initializeRecord(userID)
+                "decrement" -> presenter.decrementHotdog(userID, round)
+                else -> presenter.getPreviousData(userID, round)
+            }
+            apiErrorDialog.dismiss()
         }
 
         apiErrorDialog.setCancelable(false)
@@ -167,13 +174,20 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
         apiErrorDialog.show()
     }
 
-    fun showTablePickerDialog() {
+    private fun showTablePickerDialog() {
 
         val view = layoutInflater.inflate(R.layout.dialog_table_selection, null)
         val tablePickerDialog = android.app.AlertDialog.Builder(this@MainActivity).create()
         tablePickerDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 
         val listView = view.findViewById<ListView>(R.id.tableList)
+        val back = view.findViewById<ImageView>(R.id.back)
+
+        back.setOnClickListener {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
 
         val listItems = mutableListOf<String>()
 
@@ -187,12 +201,13 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
 
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             // value of item that is clicked
-            val tableNumber = listView.getItemAtPosition(position) as String
+            tableNumber = listView.getItemAtPosition(position) as String
 
-            // Toast the values
-            Toast.makeText(applicationContext,
-                    "Position :$position\nItem Value : $tableNumber", Toast.LENGTH_LONG)
-                    .show()
+            if (tableNumber.length == 9) {
+                tableNumber = tableNumber.takeLast(2)
+            } else {
+                tableNumber = tableNumber.takeLast(1)
+            }
 
             tablePickerDialog.dismiss()
 

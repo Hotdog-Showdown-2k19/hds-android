@@ -13,7 +13,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.github.akassharjun.hotdogshowdown.R
 import kotlinx.android.synthetic.main.activity_verification.*
-import kotlinx.android.synthetic.main.dialog_invalid_user.view.*
+import kotlinx.android.synthetic.main.dialog_error.view.*
 
 class VerificationActivity : AppCompatActivity() {
 
@@ -39,7 +39,7 @@ class VerificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verification)
-        startActivity(Intent(this@VerificationActivity, LoginActivity::class.java))
+//        startActivity(Intent(this@VerificationActivity, LoginActivity::class.java))
 
         mPasscode.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -57,7 +57,11 @@ class VerificationActivity : AppCompatActivity() {
 
     private fun verifyPasscode() {
         if (mPasscode.text.toString() == "abcd#1234" || mPasscode.text.toString() == "1234#abcd") {
+            mPasscode.text.clear()
             startActivity(Intent(this@VerificationActivity, LoginActivity::class.java))
+        } else if (mPasscode.text.toString() == "hootdog@123") {
+            mPasscode.text.clear()
+            startActivity(Intent(this@VerificationActivity, AdminControlActivity::class.java))
         } else {
             showErrorDialog()
         }
@@ -75,7 +79,7 @@ class VerificationActivity : AppCompatActivity() {
     }
 
     private fun showErrorDialog() {
-        val view = layoutInflater.inflate(R.layout.dialog_invalid_user, null)
+        val view = layoutInflater.inflate(R.layout.dialog_error, null)
         val errorDialog = android.app.AlertDialog.Builder(this@VerificationActivity).create()
         errorDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 
