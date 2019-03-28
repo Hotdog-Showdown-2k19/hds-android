@@ -39,9 +39,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'com.google.firebase:firebase-core:16.0.7'
-    implementation 'com.google.firebase:firebase-firestore:18.1.0'
-
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'org.greenrobot:eventbus:3.1.1'
@@ -51,6 +48,14 @@ dependencies {
     implementation 'com.beust:klaxon:5.0.1'
 
     implementation 'com.dynamitechetan.flowinggradient:flowinggradient:1.1'
+
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
 }
 repositories {
     mavenCentral()
@@ -58,3 +63,4 @@ repositories {
 }
 
 apply plugin: 'com.google.gms.google-services'
+

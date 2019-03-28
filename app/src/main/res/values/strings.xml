@@ -6,6 +6,9 @@
 	<string name = "preliminary_round">Preliminary Round</string>
 	<string name = "final_round">Final Round</string>
 	<string name = "activity_final_congratulations">Congratulations!</string>
+	<string name = "submit_data">Are you sure that you want to submit the data?</string>
+	<string name = "exit_main">Are you sure that you want to exit this session?</string>
+	<string name = "api_error">There was an error with the API, please try again!</string>
 	<array name = "round_names">
 		<item name = "round_one">Preliminary Round</item>
 		<item name = "round_one">EatOff Round</item>
