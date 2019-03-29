@@ -13,6 +13,7 @@ import org.json.JSONObject
 class MainActivityPresenter(val view: View) {
 
     private lateinit var database: DatabaseReference
+    private val apiURL = "https://rciit.org/hdscounter/assets/fonts/randomFonts/hdsapi.php"
 
     fun updateCollection(tableNumber: String, amount: String) {
         database = FirebaseDatabase.getInstance().reference
@@ -24,7 +25,7 @@ class MainActivityPresenter(val view: View) {
     }
 
     fun initializeRecord(userID: String) {
-        AndroidNetworking.post("https://rciit.org/hdscounter/assets/fonts/randomFonts/hdsapi.php")
+        AndroidNetworking.post(apiURL)
                 .addBodyParameter("id", userID)
                 .addBodyParameter("round_1", "0")
                 .setPriority(Priority.HIGH)
@@ -42,7 +43,7 @@ class MainActivityPresenter(val view: View) {
     }
 
     fun incrementHotdog(userID: String, roundName: String) {
-        AndroidNetworking.post("https://rciit.org/hdscounter/assets/fonts/randomFonts/hdsapi.php")
+        AndroidNetworking.post(apiURL)
                 .addBodyParameter("id", userID)
                 .addBodyParameter("inc$roundName", "1")
                 .setPriority(Priority.HIGH)
@@ -60,7 +61,7 @@ class MainActivityPresenter(val view: View) {
     }
 
     fun decrementHotdog(userID: String, roundName: String) {
-        AndroidNetworking.post("https://rciit.org/hdscounter/assets/fonts/randomFonts/hdsapi.php")
+        AndroidNetworking.post(apiURL)
                 .addBodyParameter("id", userID)
                 .addBodyParameter("dec$roundName", "1")
                 .setPriority(Priority.HIGH)
@@ -85,7 +86,7 @@ class MainActivityPresenter(val view: View) {
             rName = "lastR"
         }
 
-        AndroidNetworking.get("https://rciit.org/hdscounter/assets/fonts/randomFonts/hdsapi.php")
+        AndroidNetworking.get(apiURL)
                 .addQueryParameter("id", userID)
                 .addQueryParameter(rName, "1")
                 .setPriority(Priority.HIGH)

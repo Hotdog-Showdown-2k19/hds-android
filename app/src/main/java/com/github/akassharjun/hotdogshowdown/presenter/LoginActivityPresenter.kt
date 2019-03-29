@@ -11,9 +11,11 @@ import org.json.JSONObject
 
 class LoginActivityPresenter(val view: View) {
 
+    private val apiURL = "https://rciit.org/hdscounter/assets/fonts/randomFonts/hdsapi.php"
+
     fun retrieveUserFromDatabase(id: String) {
         Log.d("API ID", id)
-        AndroidNetworking.get("https://rciit.org/hdscounter/assets/fonts/randomFonts/hdsapi.php")
+        AndroidNetworking.get(apiURL)
                 .addQueryParameter("id", id)
                 .setPriority(Priority.HIGH)
                 .build()
