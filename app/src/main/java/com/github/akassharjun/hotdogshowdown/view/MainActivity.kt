@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
             listItems.add("Table $i")
         }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems)
+        val adapter = ArrayAdapter(this, R.layout.list_item, listItems)
 
         listView.adapter = adapter
 

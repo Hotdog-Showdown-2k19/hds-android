@@ -4,14 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.github.akassharjun.hotdogshowdown.R
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_verification.*
 import kotlinx.android.synthetic.main.dialog_error.view.*
 
@@ -83,6 +84,13 @@ class VerificationActivity : AppCompatActivity() {
         val errorDialog = android.app.AlertDialog.Builder(this@VerificationActivity).create()
         errorDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 
+        val tryAgain = view.findViewById<Button>(R.id.tryAgain)
+
+        tryAgain.setOnClickListener {
+            mUserID.text.clear()
+            errorDialog.dismiss()
+        }
+
 
         view.message.text = "Incorrect Passcode!\nTry again"
         errorDialog.setCancelable(false)
@@ -90,18 +98,5 @@ class VerificationActivity : AppCompatActivity() {
         errorDialog.show()
 
 
-        object : CountDownTimer(2000, 1000) {
-
-            override fun onTick(millisUntilFinished: Long) {
-                // TODO Auto-generated method stub
-
-            }
-
-            override fun onFinish() {
-                // TODO Auto-generated method stub
-
-                errorDialog.dismiss()
-            }
-        }.start()
     }
 }

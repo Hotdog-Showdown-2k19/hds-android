@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.github.akassharjun.hotdogshowdown.R
@@ -83,18 +83,16 @@ class LoginActivity : AppCompatActivity(), LoginActivityPresenter.View {
         val errorDialog = android.app.AlertDialog.Builder(this@LoginActivity).create()
         errorDialog.window!!.setBackgroundDrawable(ColorDrawable(0x00000000))
 
+        val tryAgain = view.findViewById<Button>(R.id.tryAgain)
+
+        tryAgain.setOnClickListener {
+            mUserID.text.clear()
+            errorDialog.dismiss()
+        }
+
         errorDialog.setCancelable(false)
         errorDialog.setView(view)
         errorDialog.show()
-
-        object : CountDownTimer(2000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-            }
-
-            override fun onFinish() {
-                errorDialog.dismiss()
-            }
-        }.start()
     }
 
     override fun updateViews(visibility: Int) {
