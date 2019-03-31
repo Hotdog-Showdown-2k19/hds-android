@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
 
     /* FUNCTIONS */
     private fun isAmountValid(hotdogsEaten: Int): Boolean {
-        return hotdogsEaten > -1 && hotdogsEaten < 21
+        return hotdogsEaten > -1 && hotdogsEaten < 10
     }
 
     private fun showConfirmationDialog(type: String) {
@@ -127,14 +127,14 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
         preliminaryRound.setOnClickListener {
             mRoundName.text = getString(R.string.preliminary_round)
             round = "FR"
-            presenter.getPreviousData(userID, round)
+            presenter.getPreviousData(userID, round, tableNumber)
             roundSelectionDialog.dismiss()
         }
 
         finalRound.setOnClickListener {
             mRoundName.text = getString(R.string.final_round)
             round = "LR"
-            presenter.getPreviousData(userID, round)
+            presenter.getPreviousData(userID, round, tableNumber)
             roundSelectionDialog.dismiss()
         }
 
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
                 "increment" -> presenter.incrementHotdog(userID, round)
                 "initialize" -> presenter.initializeRecord(userID)
                 "decrement" -> presenter.decrementHotdog(userID, round)
-                else -> presenter.getPreviousData(userID, round)
+                else -> presenter.getPreviousData(userID, round, tableNumber)
             }
             apiErrorDialog.dismiss()
         }
@@ -203,12 +203,6 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
             // value of item that is clicked
             tableNumber = listView.getItemAtPosition(position) as String
 
-            if (tableNumber.length == 9) {
-                tableNumber = tableNumber.takeLast(2)
-            } else {
-                tableNumber = tableNumber.takeLast(1)
-            }
-
             tablePickerDialog.dismiss()
 
             showRoundSelectionDialog()
@@ -219,6 +213,13 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.View {
         tablePickerDialog.show()
 
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }
 

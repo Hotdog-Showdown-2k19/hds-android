@@ -60,9 +60,9 @@ class AdminControlActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance().reference
         for (num in 1..20) {
             if (num < 10) {
-                database.child("table_0$num").setValue("0")
+                database.child("table_0$num").setValue(0)
             } else {
-                database.child("table_$num").setValue("0")
+                database.child("table_$num").setValue(0)
             }
         }
     }

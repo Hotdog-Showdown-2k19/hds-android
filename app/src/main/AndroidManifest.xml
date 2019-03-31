@@ -15,10 +15,18 @@
 		android:usesCleartextTraffic = "true"
 		tools:ignore = "AllowBackup,GoogleAppIndexingWarning"
 		tools:targetApi = "m">
-		<activity android:name = ".view.LoginActivity" />
-		<activity android:name = ".view.MainActivity" />
-		<activity android:name = ".view.ResultActivity" />
-		<activity android:name = ".view.VerificationActivity">
+		<activity
+			android:name = ".view.LoginActivity"
+			android:screenOrientation = "portrait" />
+		<activity
+			android:name = ".view.MainActivity"
+			android:screenOrientation = "portrait" />
+		<activity
+			android:name = ".view.ResultActivity"
+			android:screenOrientation = "portrait" />
+		<activity
+			android:name = ".view.VerificationActivity"
+			android:screenOrientation = "portrait">
 			<intent-filter>
 				<action android:name = "android.intent.action.MAIN" />
 				

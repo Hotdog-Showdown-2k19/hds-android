@@ -17,11 +17,17 @@ class MainActivityPresenter(val view: View) {
 
     fun updateCollection(tableNumber: String, amount: String) {
         database = FirebaseDatabase.getInstance().reference
-        if (tableNumber.length < 2) {
-            database.child("table_0$tableNumber").setValue(amount)
+
+        val tName: String
+        val num = tableNumber.takeLast(2).replace(" ", "").toInt()
+
+        tName = if (num < 10) {
+            "table_0${tableNumber.takeLast(1)}"
         } else {
-            database.child("table_$tableNumber").setValue(amount)
+            tableNumber.toLowerCase().replace(" ", "_")
         }
+
+        database.child(tName).setValue(amount.toInt())
     }
 
     fun initializeRecord(userID: String) {
@@ -78,7 +84,7 @@ class MainActivityPresenter(val view: View) {
                 })
     }
 
-    fun getPreviousData(userID: String, roundName: String) {
+    fun getPreviousData(userID: String, roundName: String, tableNumber: String) {
         var rName = ""
         if (roundName == "FR") {
             rName = "firstR"
@@ -98,10 +104,12 @@ class MainActivityPresenter(val view: View) {
                                 Log.d("API RESPONSE", response.toString())
                                 if (response.get("round_1") != null) {
                                     view.setPreviousData(response.get("round_1").toString())
+                                    updateCollection(tableNumber, response.get("round_1").toString())
                                 }
                             } else {
                                 if (response.get("round_2") != null) {
                                     view.setPreviousData(response.get("round_2").toString())
+                                    updateCollection(tableNumber, response.get("round_2").toString())
                                 }
                             }
                         }
